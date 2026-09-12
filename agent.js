@@ -23,8 +23,7 @@ async function main() {
 
     console.log("Page title:", await page.title());
 
-    await browser.close();
-    await client.sessions.release(session.id);
+     await new Promise(() => {});
 }
 
 main().catch(console.error);
