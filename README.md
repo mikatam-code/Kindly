@@ -1,1 +1,0 @@
-# mika-susie-project
