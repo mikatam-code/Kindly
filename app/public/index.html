@@ -805,7 +805,7 @@
     }
 
 
-   async function startAppointment() {
+    async function startAppointment() {
 
     const request =
         document.getElementById(
@@ -821,23 +821,52 @@
         return;
     }
 
-    const response = await fetch("/book-appointment", {
+    try {
 
-        method: "POST",
+        alert(
+            "Kindly is understanding your request..."
+        );
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+        const response = await fetch(
+            "/book-appointment",
+            {
+                method: "POST",
 
-        body: JSON.stringify({
-            request: request
-        })
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-    });
+                body: JSON.stringify({
+                    request: request
+                })
+            }
+        );
 
-    const result = await response.json();
+        const result = await response.json();
 
-    alert(result.message);
+        if (!response.ok) {
+            throw new Error(
+                result.message || "Something went wrong."
+            );
+        }
+
+        alert(
+            "Kindly understood:\n\n" +
+            result.understanding +
+            "\n\n" +
+            result.message
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Sorry, something went wrong.\n\n" +
+            "Please try again."
+        );
+
+    }
 }
 
 
