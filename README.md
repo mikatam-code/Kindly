@@ -239,7 +239,7 @@ This architecture allows each component to specialize in what it does best.
 
 ---
 
-# 🗓️ Constraint-Based Scheduling
+# Constraint-Based Scheduling
 
 The scheduling engine treats the user's day as a constrained time-allocation problem.
 
@@ -486,8 +486,6 @@ Potential extensions include:
 * Personalized scheduling models
 
 ---
-
-## 👥 Team
 
 Built with ❤️ by Team Caramel (Mika & Susie)
 
