@@ -1,5 +1,0 @@
-flask
-google-genai
-python-dotenv
-steel-sdk
-playwright

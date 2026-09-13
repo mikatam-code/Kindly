@@ -1,0 +1,5423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kindly</title>
+
+  <style>
+    :root {
+      --ink: #202124;
+      --muted: #6f747b;
+      --paper: #f7f7f3;
+      --card: #ffffff;
+      --line: #deded8;
+      --mint: #dff5e8;
+      --lav: #e9e3ff;
+      --yellow: #fff2bd;
+      --coral: #ffdcd5;
+      --accent: #5b5bd6;
+      --accent-dark: #4848b9;
+      --success: #287347;
+      --success-bg: #e2f6e9;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100vh;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 243, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .navlinks {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      border: 0;
+      background: transparent;
+      padding: 9px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .nav-btn:hover {
+      background: #ecece7;
+      color: var(--ink);
+    }
+
+    .nav-btn.active {
+      background: var(--ink);
+      color: white;
+    }
+
+    /* =========================
+       LAYOUT
+    ========================= */
+
+    .main {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 42px 24px 80px;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .hero {
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(34px, 6vw, 62px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       PANELS
+    ========================= */
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .panel-head h2 {
+      margin: 0 0 5px;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* =========================
+       FORM ELEMENTS
+    ========================= */
+
+    label.field-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    textarea,
+    input[type="text"],
+    input[type="date"],
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #fff;
+      color: var(--ink);
+      padding: 13px 14px;
+      outline: none;
+      transition: 0.15s ease;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    textarea:focus,
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(91, 91, 214, 0.1);
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field-help {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 17px;
+      background: var(--accent);
+      color: white;
+      font-weight: 800;
+      transition:
+        transform 0.12s ease,
+        background 0.12s ease;
+    }
+
+    .btn:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn.secondary {
+      background: #efefeb;
+      color: var(--ink);
+    }
+
+    .btn.secondary:hover {
+      background: #e4e4df;
+    }
+
+    .btn.danger {
+      background: var(--coral);
+      color: #7c2418;
+    }
+
+    .btn.danger:hover {
+      background: #ffc9bf;
+    }
+
+    /* =========================
+       LOADING / ERRORS
+    ========================= */
+
+    .loading {
+      display: none;
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    .error {
+      display: none;
+      margin-top: 15px;
+      padding: 13px 15px;
+      border-radius: 12px;
+      background: var(--coral);
+      color: #7c2418;
+      line-height: 1.5;
+    }
+
+    .error.show {
+      display: block;
+    }
+
+    /* =========================
+       RESULT CARDS
+    ========================= */
+
+    .result-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 19px;
+      margin-bottom: 14px;
+      background: #fff;
+    }
+
+    .result-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .result-card h3 {
+      margin: 0 0 7px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .result-card p {
+      margin: 6px 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--lav);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .summary-box {
+      padding: 17px;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      background: var(--mint);
+    }
+
+    .summary-box p {
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    .why-list {
+      margin: 10px 0 20px;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* =========================
+       LOCATION PICKER
+    ========================= */
+
+    .location-box {
+      margin-top: 18px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fafaf7;
+    }
+
+    .location-box-title {
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .location-choice {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 14px;
+      margin-bottom: 8px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .location-choice:hover {
+      border-color: #c4c4be;
+      transform: translateY(-1px);
+    }
+
+    .location-choice.selected {
+      border-color: var(--accent);
+      background: #f7f7ff;
+    }
+
+    .location-choice.added {
+      border-color: #7bbf94;
+      background: #f4fcf6;
+      box-shadow: inset 0 0 0 1px #b8e1c5;
+    }
+
+    .location-choice.selected.added {
+      border-color: var(--success);
+      background: #f1fbf4;
+      box-shadow:
+        inset 0 0 0 2px #9ed2ad,
+        0 3px 10px rgba(40, 115, 71, 0.08);
+    }
+
+    .location-choice input {
+      margin-top: 3px;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .location-choice-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .location-choice-name {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .location-choice-address {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .location-choice-reason {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* Kindly's recommendation is deliberately only a small badge. */
+
+    .Kindly-choice-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: var(--lav);
+      color: #5144a7;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .calendar-added-badge {
+      display: none;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--success-bg);
+      color: var(--success);
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .location-choice.added .calendar-added-badge {
+      display: inline-flex;
+    }
+
+    .custom-location-wrap {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .custom-location-wrap.show {
+      display: block;
+    }
+
+    .add-calendar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 13px;
+    }
+
+    .add-to-calendar.added {
+      background: var(--success);
+      color: white;
+    }
+
+    .add-to-calendar.added:hover {
+      background: var(--success);
+      transform: none;
+    }
+
+    .add-to-calendar.switch {
+      background: var(--accent);
+      color: white;
+    }
+
+    .calendar-success-message {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 15px;
+      border: 1px solid #b8e1c5;
+      border-radius: 12px;
+      background: var(--success-bg);
+      color: var(--success);
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .calendar-success-message.show {
+      display: block;
+    }
+
+    .calendar-remove-note {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4d785d;
+    }
+
+    /* =========================
+       CALENDAR
+    ========================= */
+
+    .calendar-panel {
+      padding: 24px;
+    }
+
+    .calendar-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .calendar-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .calendar-nav-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .calendar-nav-btn:hover {
+      background: #efefeb;
+      transform: translateY(-1px);
+    }
+
+    .calendar-date {
+      width: auto !important;
+      min-width: 145px;
+      height: 42px;
+    }
+
+    .calendar-shell {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: white;
+    }
+
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-bottom: 1px solid var(--line);
+      background: #fafaf7;
+    }
+
+    .calendar-weekday {
+      padding: 13px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+
+    .calendar-day {
+      position: relative;
+      min-height: 135px;
+      padding: 9px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: white;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.12s ease;
+    }
+
+    .calendar-day:nth-child(7n) {
+      border-right: 0;
+    }
+
+    .calendar-day:hover {
+      background: #fafaff;
+    }
+
+    .calendar-day.other-month {
+      background: #f7f7f4;
+      color: #aaa;
+    }
+
+    .calendar-day.other-month .calendar-day-number {
+      color: #aaa;
+    }
+
+    .calendar-day.today {
+      background: #f8f8ff;
+    }
+
+    .calendar-day.selected {
+      box-shadow: inset 0 0 0 2px var(--accent);
+      z-index: 2;
+    }
+
+    .calendar-day-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 7px;
+    }
+
+    .calendar-day-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 29px;
+      height: 29px;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .calendar-day.today .calendar-day-number {
+      background: var(--accent);
+      color: white;
+    }
+
+    .calendar-events {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .calendar-event {
+      position: relative;
+      width: 100%;
+      padding: 6px 8px;
+      border: 0;
+      border-radius: 7px;
+      background: var(--lav);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: 0.12s ease;
+      overflow: hidden;
+    }
+
+    .calendar-event:hover {
+      transform: translateY(-1px);
+      filter: brightness(0.98);
+    }
+
+    .calendar-event-time {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 10px;
+      font-weight: 900;
+      opacity: 0.7;
+    }
+
+    .calendar-event-title {
+      display: block;
+      overflow: hidden;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.25;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .calendar-event:nth-child(4n + 1) {
+      background: var(--lav);
+    }
+
+    .calendar-event:nth-child(4n + 2) {
+      background: var(--mint);
+    }
+
+    .calendar-event:nth-child(4n + 3) {
+      background: var(--yellow);
+    }
+
+    .calendar-event:nth-child(4n + 4) {
+      background: var(--coral);
+    }
+
+    .calendar-more {
+      padding: 3px 6px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .calendar-day-details {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fafaf7;
+    }
+
+    .calendar-day-details-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 14px;
+    }
+
+    .calendar-day-details-title {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .calendar-count {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--lav);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .calendar-detail-event {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 13px;
+      margin-bottom: 8px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+    }
+
+    .calendar-detail-event:last-child {
+      margin-bottom: 0;
+    }
+
+    .calendar-detail-time {
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .calendar-detail-task {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .calendar-detail-location {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .remove-event {
+      border: 0;
+      border-radius: 9px;
+      padding: 7px 9px;
+      background: #f0f0ec;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .remove-event:hover {
+      background: var(--coral);
+      color: #7c2418;
+    }
+
+    .calendar-empty {
+      padding: 35px 20px;
+      text-align: center;
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      color: var(--muted);
+    }
+
+    .calendar-empty strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 17px;
+    }
+
+    /* =========================
+       APPOINTMENTS
+    ========================= */
+
+    .appointment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    /* =========================
+       APPOINTMENT AVAILABILITY
+    ========================= */
+
+    .appointment-option {
+      position: relative;
+    }
+
+    .appointment-option.selected {
+      border-color: var(--accent);
+      background: #f7f7ff;
+      box-shadow: inset 0 0 0 1px rgba(91, 91, 214, 0.12);
+    }
+
+    .appointment-option-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .appointment-option-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .appointment-select-btn {
+      flex-shrink: 0;
+    }
+
+    .availability-box {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fafaf7;
+    }
+
+    .availability-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .availability-header h4 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .availability-status {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--yellow);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .availability-status.confirmed {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .availability-status.unable {
+      background: var(--coral);
+      color: #7c2418;
+    }
+
+    .availability-message {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .slot-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .slot-btn {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 9px 12px;
+      background: white;
+      color: var(--ink);
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.12s ease;
+    }
+
+    .slot-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      background: #f7f7ff;
+    }
+
+    .slot-btn.added {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: var(--success);
+      cursor: default;
+    }
+
+    .appointment-calendar-note {
+      margin-top: 12px;
+      color: var(--success);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 760px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .main {
+        padding: 30px 16px 60px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .appointment-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .calendar-day {
+        min-height: 85px;
+        padding: 5px;
+      }
+
+      .calendar-weekday {
+        padding: 9px 3px;
+        font-size: 10px;
+      }
+
+      .calendar-day-number {
+        width: 25px;
+        height: 25px;
+        font-size: 11px;
+      }
+
+      .calendar-event {
+        padding: 4px 5px;
+      }
+
+      .calendar-event-time {
+        display: none;
+      }
+
+      .calendar-event-title {
+        font-size: 10px;
+      }
+
+      .calendar-detail-event {
+        grid-template-columns: 1fr auto;
+      }
+
+      .calendar-detail-time {
+        grid-column: 1 / -1;
+      }
+
+      .calendar-controls {
+        width: 100%;
+      }
+
+      .calendar-date {
+        flex: 1;
+      }
+
+      .panel-head {
+        flex-direction: column;
+      }
+    }
+    /* =========================================================
+      KINDLY LOADING OVERLAY
+    ========================================================= */
+
+    .kindly-loading-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 24px;
+
+      background: rgba(247, 247, 243, 0.82);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .kindly-loading-overlay.show {
+      display: flex;
+    }
+
+    .kindly-loading-card {
+      width: min(440px, 100%);
+
+      padding: 36px 32px;
+
+      border: 1px solid var(--line);
+      border-radius: 24px;
+
+      background: white;
+
+      box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.12);
+
+      text-align: center;
+
+      animation: kindlyLoadingAppear 0.25s ease-out;
+    }
+
+    @keyframes kindlyLoadingAppear {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+
+    /* Spinner */
+
+    .kindly-loader {
+      position: relative;
+
+      width: 64px;
+      height: 64px;
+
+      margin: 0 auto 24px;
+    }
+
+    .kindly-loader-ring {
+      position: absolute;
+      inset: 0;
+
+      border: 5px solid #ececf7;
+      border-top-color: var(--accent);
+
+      border-radius: 50%;
+
+      animation:
+        kindlySpin 0.9s linear infinite;
+    }
+
+    .kindly-loader-dot {
+      position: absolute;
+
+      width: 12px;
+      height: 12px;
+
+      top: 50%;
+      left: 50%;
+
+      margin-left: -6px;
+      margin-top: -6px;
+
+      border-radius: 50%;
+
+      background: var(--accent);
+
+      animation:
+        kindlyPulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes kindlySpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes kindlyPulse {
+      0%,
+      100% {
+        transform: scale(0.7);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+
+    .kindly-loading-title {
+      margin-bottom: 8px;
+
+      color: var(--ink);
+
+      font-size: 22px;
+      font-weight: 900;
+
+      letter-spacing: -0.03em;
+    }
+
+    .kindly-loading-message {
+      min-height: 24px;
+
+      color: var(--muted);
+
+      font-size: 15px;
+      font-weight: 700;
+
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .kindly-loading-message.fade {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+
+    /* Animated progress bar */
+
+    .kindly-loading-progress {
+      height: 5px;
+
+      margin: 24px 0 18px;
+
+      overflow: hidden;
+
+      border-radius: 999px;
+
+      background: #eeeeea;
+    }
+
+    .kindly-loading-progress-bar {
+      width: 35%;
+      height: 100%;
+
+      border-radius: 999px;
+
+      background: var(--accent);
+
+      animation:
+        kindlyProgress 1.8s ease-in-out infinite;
+    }
+
+    @keyframes kindlyProgress {
+      0% {
+        transform: translateX(-120%);
+      }
+
+      50% {
+        transform: translateX(180%);
+      }
+
+      100% {
+        transform: translateX(300%);
+      }
+    }
+
+    .kindly-loading-note {
+      color: #92959a;
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+
+    /* =========================================================
+      BETTER APPOINTMENT CARDS
+    ========================================================= */
+
+    .appointment-option {
+      padding: 24px;
+
+      border: 1px solid var(--line);
+      border-radius: 20px;
+
+      background: white;
+
+      box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.04);
+
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
+    }
+
+    .appointment-option:hover {
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .appointment-option.selected {
+      border-color: var(--accent);
+
+      box-shadow:
+        0 10px 28px rgba(91, 91, 214, 0.1),
+        inset 0 0 0 1px rgba(91, 91, 214, 0.12);
+    }
+
+    .appointment-option-top {
+      align-items: center;
+    }
+
+    .appointment-option-info h3 {
+      margin: 3px 0 10px;
+
+      font-size: 21px;
+      letter-spacing: -0.035em;
+    }
+
+    .appointment-option-info p {
+      margin: 8px 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .appointment-option-info strong {
+      color: var(--ink);
+    }
+
+    .appointment-option-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .appointment-recommended {
+      display: inline-flex;
+      align-items: center;
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      background: var(--lav);
+      color: #5144a7;
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .appointment-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+
+      margin: 13px 0;
+    }
+
+    .appointment-meta-chip {
+      display: inline-flex;
+      align-items: center;
+
+      padding: 6px 9px;
+
+      border-radius: 8px;
+
+      background: #f4f4f0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .appointment-booking-link {
+      display: inline-flex;
+
+      margin-top: 12px;
+
+      color: var(--accent);
+
+      font-size: 13px;
+      font-weight: 900;
+
+      text-decoration: none;
+    }
+
+    .appointment-booking-link:hover {
+      text-decoration: underline;
+    }
+
+
+    /* Better availability box */
+
+    .availability-box {
+      margin-top: 20px;
+      padding: 20px;
+
+      border: 1px solid var(--line);
+      border-radius: 16px;
+
+      background: #fafaf7;
+    }
+
+    .availability-header {
+      margin-bottom: 15px;
+    }
+
+    .availability-header h4 {
+      font-size: 16px;
+    }
+
+    .slot-list {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fill, minmax(145px, 1fr));
+
+      gap: 9px;
+    }
+
+    .slot-btn {
+      min-height: 45px;
+
+      border: 1px solid var(--line);
+      border-radius: 11px;
+
+      background: white;
+
+      color: var(--ink);
+
+      font-size: 13px;
+      font-weight: 900;
+
+      transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    .slot-btn:hover {
+      border-color: var(--accent);
+
+      background: #f7f7ff;
+
+      transform: translateY(-1px);
+    }
+
+    .slot-btn.added {
+      border-color: var(--success);
+
+      background: var(--success-bg);
+
+      color: var(--success);
+    }
+
+
+    /* Responsive loading */
+
+    @media (max-width: 600px) {
+
+      .kindly-loading-card {
+        padding: 30px 22px;
+      }
+
+      .appointment-option-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .appointment-option-actions {
+        align-items: stretch;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================================
+       KINDLY LOADING OVERLAY
+  ========================================================== -->
+
+  <div id="kindlyLoadingOverlay" class="kindly-loading-overlay">
+
+    <div class="kindly-loading-card">
+
+      <div class="kindly-loader">
+        <div class="kindly-loader-ring"></div>
+        <div class="kindly-loader-dot"></div>
+      </div>
+
+      <div class="kindly-loading-title">
+        Kindly is working on it
+      </div>
+
+      <div
+        id="kindlyLoadingMessage"
+        class="kindly-loading-message"
+      >
+        Getting things organized...
+      </div>
+
+      <div class="kindly-loading-progress">
+        <div class="kindly-loading-progress-bar"></div>
+      </div>
+
+      <div class="kindly-loading-note">
+        This may take a little while while Kindly checks
+        the web for useful information.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="app">
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <header class="topbar">
+      <div class="topbar-inner">
+
+        <div class="brand">
+          <span class="brand-dot"></span>
+          Kindly
+        </div>
+
+        <nav class="navlinks">
+          <button class="nav-btn active" data-view="planner" type="button">
+            Planner
+          </button>
+
+          <button class="nav-btn" data-view="calendar" type="button">
+            My Calendar
+          </button>
+
+          <button class="nav-btn" data-view="appointments" type="button">
+            Appointments
+          </button>
+        </nav>
+
+      </div>
+    </header>
+
+
+    <main class="main">
+
+      <!-- =========================
+           PLANNER
+      ========================== -->
+
+      <section id="planner" class="view active">
+
+        <div class="hero">
+          <h1>Your day, made a little easier.</h1>
+
+          <p>
+            Tell Kindly everything that's on your mind.
+            We'll figure our what you need, find real options online,
+            and let you choose what belongs on your schedule.
+          </p>
+        </div>
+
+
+        <div class="panel">
+
+          <div class="panel-head">
+            <div>
+              <h2>What do you need to do?</h2>
+
+              <p class="sub">
+                Write it naturally. You can include multiple tasks,
+                deadlines, preferences, and restrictions.
+              </p>
+            </div>
+          </div>
+
+
+          <div class="field">
+            <label class="field-label" for="planRequest">
+              Your plans
+            </label>
+
+            <textarea
+              id="planRequest"
+              placeholder="Example: I need to study for 2 hours, get my laptop repaired, and pick up groceries after 3pm."
+            ></textarea>
+          </div>
+
+
+          <div class="field">
+            <label class="field-label" for="planLocation">
+              Where should Kindly search?
+            </label>
+
+            <input
+              id="planLocation"
+              type="text"
+              placeholder="Example: University of Toronto, Toronto, ON"
+            />
+
+            <div class="field-help">
+              Enter a campus, neighborhood, city, shopping centre,
+              or any other location you want Kindly to search around.
+            </div>
+          </div>
+
+
+          <button id="planBtn" class="btn" type="button">
+            Build my day
+          </button>
+
+
+          <div id="planLoading" class="loading">
+            Researching places and building your plan...
+          </div>
+
+
+          <div id="planError" class="error"></div>
+
+        </div>
+
+
+        <div id="planResult"></div>
+
+      </section>
+
+
+      <!-- =========================
+           CALENDAR
+      ========================== -->
+
+      <section id="calendar" class="view">
+
+        <div class="hero">
+          <h1>My calendar.</h1>
+
+          <p>
+            See your Kindly plans across the month and click any
+            day to see its tasks.
+          </p>
+        </div>
+
+
+        <div class="panel calendar-panel">
+
+          <div class="calendar-toolbar">
+
+            <div>
+              <h2 id="calendarMonthTitle" style="margin: 0 0 5px;">
+                September 2026
+              </h2>
+
+              <p class="sub">
+                Your saved Kindly tasks appear on the calendar.
+              </p>
+            </div>
+
+
+            <div class="calendar-controls">
+
+              <button
+                id="prevMonthBtn"
+                class="calendar-nav-btn"
+                type="button"
+                aria-label="Previous month"
+              >
+                ←
+              </button>
+
+
+              <button
+                id="todayCalendarBtn"
+                class="btn secondary"
+                type="button"
+              >
+                Today
+              </button>
+
+
+              <button
+                id="nextMonthBtn"
+                class="calendar-nav-btn"
+                type="button"
+                aria-label="Next month"
+              >
+                →
+              </button>
+
+
+              <input
+                id="calendarDate"
+                class="calendar-date"
+                type="date"
+              />
+
+
+              <button
+                id="clearCalendarBtn"
+                class="btn danger"
+                type="button"
+              >
+                Clear day
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div id="calendarResult"></div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           APPOINTMENTS
+      ========================== -->
+
+      <section id="appointments" class="view">
+
+        <div class="hero">
+
+          <h1>Appointments.</h1>
+
+          <p>
+            Find useful appointment options using Kindly's live
+            web research.
+          </p>
+
+        </div>
+
+
+        <div class="panel">
+
+          <div class="appointment-grid">
+
+            <div class="field">
+              <label class="field-label" for="appointmentWhat">
+                What do you need?
+              </label>
+
+              <input
+                id="appointmentWhat"
+                type="text"
+                placeholder="Example: haircut"
+              />
+            </div>
+
+
+            <div class="field">
+              <label class="field-label" for="appointmentWhere">
+                Where?
+              </label>
+
+              <input
+                id="appointmentWhere"
+                type="text"
+                placeholder="Example: downtown Toronto"
+              />
+            </div>
+
+
+            <div class="field">
+              <label class="field-label" for="appointmentWhen">
+                When?
+              </label>
+
+              <input
+                id="appointmentWhen"
+                type="text"
+                placeholder="Example: Saturday afternoon"
+              />
+            </div>
+
+
+            <div class="field">
+              <label class="field-label" for="appointmentExtras">
+                Extra preferences
+              </label>
+
+              <input
+                id="appointmentExtras"
+                type="text"
+                placeholder="Example: under $40, student-friendly"
+              />
+            </div>
+
+          </div>
+
+
+          <button id="appointmentBtn" class="btn" type="button">
+            Find appointments
+          </button>
+
+
+          <div id="appointmentLoading" class="loading">
+            Searching for appointment options...
+          </div>
+
+
+          <div id="appointmentError" class="error"></div>
+
+        </div>
+
+
+        <div id="appointmentResult"></div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <script>
+
+    /* ==========================================================
+       Kindly FRONTEND
+    ========================================================== */
+
+    const CALENDAR_STORAGE_KEY = "KindlyCalendar";
+
+    /* ==========================================================
+       KINDLY LOADING SYSTEM
+      ========================================================== */
+
+      const kindlyLoadingOverlay =
+        document.getElementById(
+          "kindlyLoadingOverlay"
+        );
+
+      const kindlyLoadingMessage =
+        document.getElementById(
+          "kindlyLoadingMessage"
+        );
+
+      let kindlyLoadingTimer = null;
+      let kindlyLoadingMessages = [];
+      let kindlyLoadingIndex = 0;
+
+
+      /*
+        Different tasks get different messages.
+      */
+
+      const plannerLoadingMessages = [
+        "Getting things organized...",
+        "Understanding what you need...",
+        "Finding useful places...",
+        "Checking the details...",
+        "Putting the pieces together...",
+        "Crafting your day...",
+        "Making sure everything fits...",
+        "Finalizing your plan..."
+      ];
+
+
+      const appointmentLoadingMessages = [
+        "Finding appointment options...",
+        "Looking through the web...",
+        "Checking useful businesses...",
+        "Finding their booking information...",
+        "Visiting booking pages...",
+        "Checking available times...",
+        "Finalizing your options..."
+      ];
+
+
+      function showKindlyLoading(messages) {
+
+        if (!kindlyLoadingOverlay) {
+          return;
+        }
+
+        kindlyLoadingMessages = messages;
+
+        kindlyLoadingIndex = 0;
+
+        kindlyLoadingMessage.textContent =
+          kindlyLoadingMessages[0];
+
+        kindlyLoadingOverlay.classList.add("show");
+
+        clearInterval(
+          kindlyLoadingTimer
+        );
+
+        kindlyLoadingTimer =
+          setInterval(() => {
+
+            kindlyLoadingMessage.classList.add(
+              "fade"
+            );
+
+            setTimeout(() => {
+
+              kindlyLoadingIndex =
+                (kindlyLoadingIndex + 1) %
+                kindlyLoadingMessages.length;
+
+              kindlyLoadingMessage.textContent =
+                kindlyLoadingMessages[
+                  kindlyLoadingIndex
+                ];
+
+              kindlyLoadingMessage.classList.remove(
+                "fade"
+              );
+
+            }, 200);
+
+          }, 1200);
+      }
+
+
+      function hideKindlyLoading() {
+
+        if (!kindlyLoadingOverlay) {
+          return;
+        }
+
+        clearInterval(
+          kindlyLoadingTimer
+        );
+
+        kindlyLoadingTimer = null;
+
+        kindlyLoadingOverlay.classList.remove(
+          "show"
+        );
+      }
+
+    /* ==========================================================
+       BASIC HELPERS
+    ========================================================== */
+
+    function esc(value) {
+      if (value === null || value === undefined) {
+        return "";
+      }
+
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+
+    function todayString() {
+      const today = new Date();
+
+      return `${today.getFullYear()}-${String(
+        today.getMonth() + 1
+      ).padStart(2, "0")}-${String(
+        today.getDate()
+      ).padStart(2, "0")}`;
+    }
+
+
+    function getCalendar() {
+      try {
+        const saved =
+          localStorage.getItem(
+            CALENDAR_STORAGE_KEY
+          );
+
+        if (!saved) {
+          return [];
+        }
+
+        const parsed = JSON.parse(saved);
+
+        return Array.isArray(parsed)
+          ? parsed
+          : [];
+
+      } catch (error) {
+        console.error(
+          "Could not load calendar:",
+          error
+        );
+
+        return [];
+      }
+    }
+
+
+    function saveCalendar(events) {
+      localStorage.setItem(
+        CALENDAR_STORAGE_KEY,
+        JSON.stringify(events)
+      );
+    }
+
+
+    function formatCalendarDate(dateString) {
+      if (!dateString) {
+        return "your selected day";
+      }
+
+      const date =
+        new Date(
+          dateString + "T00:00:00"
+        );
+
+      return date.toLocaleDateString(
+        undefined,
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        }
+      );
+    }
+
+
+    /* ==========================================================
+       NAVIGATION
+    ========================================================== */
+
+    const navButtons =
+      document.querySelectorAll(".nav-btn");
+
+    const views =
+      document.querySelectorAll(".view");
+
+
+    navButtons.forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        const target =
+          button.dataset.view;
+
+
+        navButtons.forEach(btn => {
+          btn.classList.remove("active");
+        });
+
+
+        button.classList.add("active");
+
+
+        views.forEach(view => {
+          view.classList.remove("active");
+        });
+
+
+        const targetView =
+          document.getElementById(target);
+
+
+        if (targetView) {
+          targetView.classList.add("active");
+        }
+
+
+        if (target === "calendar") {
+          renderCalendar();
+        }
+
+      });
+
+    });
+
+
+    /* ==========================================================
+       PLANNER
+    ========================================================== */
+
+    const planBtn =
+      document.getElementById("planBtn");
+
+    const planLoading =
+      document.getElementById("planLoading");
+
+    const planError =
+      document.getElementById("planError");
+
+    const planResult =
+      document.getElementById("planResult");
+
+
+    let currentPlanData = null;
+
+
+    planBtn.addEventListener("click", async () => {
+
+      const request =
+        document
+          .getElementById("planRequest")
+          .value
+          .trim();
+
+
+      const location =
+        document
+          .getElementById("planLocation")
+          .value
+          .trim();
+
+
+      planError.classList.remove("show");
+      planError.textContent = "";
+      planResult.innerHTML = "";
+
+
+      if (!request) {
+        showPlanError(
+          "Tell Kindly what you need to get done."
+        );
+        return;
+      }
+
+
+      if (!location) {
+        showPlanError(
+          "Please enter a location so Kindly can find nearby places."
+        );
+        return;
+      }
+
+
+      planBtn.disabled = true;
+      planLoading.classList.add("show");
+
+      showKindlyLoading(
+        plannerLoadingMessages
+      );
+
+
+      try {
+
+        const response =
+          await fetch("/api/plan", {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              request,
+              location
+            })
+          });
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok || data.error) {
+          throw new Error(
+            data.error ||
+            "Kindly could not build your plan."
+          );
+        }
+
+
+        currentPlanData = data.plan;
+
+        renderPlan(data.plan);
+
+      } catch (error) {
+
+        console.error(error);
+
+        showPlanError(
+          error.message ||
+          "Something went wrong while building your plan."
+        );
+
+      } finally {
+
+        planBtn.disabled = false;
+        planLoading.classList.remove("show");
+
+        hideKindlyLoading();
+
+      }
+
+    });
+
+
+    function showPlanError(message) {
+
+      planError.textContent = message;
+      planError.classList.add("show");
+
+    }
+
+
+    /* ==========================================================
+       CALENDAR EVENT MATCHING
+
+       A task can have ONE selected location on a given day.
+       This makes switching locations predictable.
+    ========================================================== */
+
+    function getTaskEventsForDate(task, date) {
+
+      const events = getCalendar();
+
+      return events.filter(event =>
+        event.date === date &&
+        event.task === (task || "Task")
+      );
+
+    }
+
+
+    function getTaskEventForDate(task, date) {
+
+      return getTaskEventsForDate(
+        task,
+        date
+      )[0] || null;
+
+    }
+
+
+    function locationsMatch(a, b) {
+
+      return String(a || "").trim().toLowerCase() ===
+        String(b || "").trim().toLowerCase();
+
+    }
+
+
+    /* ==========================================================
+       Kindly CHOICE DETECTION
+
+       Kindly's recommendation is ONLY a small badge inside
+       the recommended location option.
+    ========================================================== */
+
+    function isKindlyChoice(option, index) {
+
+      if (!option) {
+        return index === 0;
+      }
+
+      return (
+        option.Kindly_choice === true ||
+        option.is_Kindly_choice === true ||
+        option.recommended === true ||
+        option.recommended_by_Kindly === true ||
+        index === 0
+      );
+
+    }
+
+
+    /* ==========================================================
+       RENDER PLAN
+    ========================================================== */
+
+    function renderPlan(data) {
+
+      if (!data) {
+        planResult.innerHTML = "";
+        return;
+      }
+
+
+      currentPlanData = data;
+
+
+      const plan =
+        Array.isArray(data.plan)
+          ? data.plan
+          : [];
+
+
+      const summary =
+        data.summary || "";
+
+
+      const whyThisPlan =
+        Array.isArray(data.why_this_plan)
+          ? data.why_this_plan
+          : [];
+
+
+      let html = "";
+
+
+      if (summary) {
+
+        html += `
+          <div class="summary-box">
+            <p>${esc(summary)}</p>
+          </div>
+        `;
+
+      }
+
+
+      if (whyThisPlan.length) {
+
+        html += `
+          <div class="panel">
+
+            <h2 style="margin-top:0;">
+              Why this plan
+            </h2>
+
+            <ul class="why-list">
+
+              ${whyThisPlan
+                .map(
+                  item =>
+                    `<li>${esc(item)}</li>`
+                )
+                .join("")}
+
+            </ul>
+
+          </div>
+        `;
+
+      }
+
+
+      if (!plan.length) {
+
+        html += `
+          <div class="panel">
+
+            <div class="calendar-empty">
+
+              <strong>
+                No plan was generated.
+              </strong>
+
+              Try adding more detail to your request.
+
+            </div>
+
+          </div>
+        `;
+
+        planResult.innerHTML = html;
+
+        return;
+      }
+
+
+      plan.forEach((item, index) => {
+
+        html += renderPlanItem(
+          item,
+          index
+        );
+
+      });
+
+
+      if (
+        Array.isArray(data.warnings) &&
+        data.warnings.length
+      ) {
+
+        html += `
+          <div class="panel">
+
+            <h2 style="margin-top:0;">
+              Notes
+            </h2>
+
+            <ul class="why-list">
+
+              ${data.warnings
+                .map(
+                  item =>
+                    `<li>${esc(item)}</li>`
+                )
+                .join("")}
+
+            </ul>
+
+          </div>
+        `;
+
+      }
+
+
+      planResult.innerHTML = html;
+
+      attachLocationPickerEvents();
+
+    }
+
+
+    /* ==========================================================
+       RENDER ONE PLAN ITEM
+    ========================================================== */
+
+    function renderPlanItem(item, index) {
+
+      const task =
+        item.task || "Task";
+
+
+      const time =
+        item.time || "Flexible time";
+
+
+      const reason =
+        item.reason || "";
+
+
+      const mainLocation =
+        item.location || "";
+
+
+      let options =
+        Array.isArray(item.location_options)
+          ? item.location_options
+          : [];
+
+
+      const uniqueOptions = [];
+      const seen = new Set();
+
+
+      function addOption(
+        name,
+        address,
+        why,
+        originalOption = null
+      ) {
+
+        const cleanName =
+          String(name || "").trim();
+
+
+        const cleanAddress =
+          String(address || "").trim();
+
+
+        if (!cleanName) {
+          return;
+        }
+
+
+        if (
+          cleanName.toLowerCase() ===
+          "no reliable location found"
+        ) {
+          return;
+        }
+
+
+        const key =
+          `${cleanName}|${cleanAddress}`.toLowerCase();
+
+
+        if (seen.has(key)) {
+          return;
+        }
+
+
+        seen.add(key);
+
+
+        uniqueOptions.push({
+          name: cleanName,
+          address: cleanAddress,
+          why_it_fits:
+            String(why || "").trim(),
+
+          Kindly_choice:
+            originalOption?.Kindly_choice === true,
+
+          is_Kindly_choice:
+            originalOption?.is_Kindly_choice === true,
+
+          recommended:
+            originalOption?.recommended === true,
+
+          recommended_by_Kindly:
+            originalOption?.recommended_by_Kindly === true
+        });
+
+      }
+
+
+      /*
+        The main location becomes the first LOCATION OPTION.
+        It is NOT its own separate Kindly option.
+      */
+
+      if (
+        mainLocation &&
+        mainLocation.toLowerCase() !==
+          "no reliable location found"
+      ) {
+
+        addOption(
+          mainLocation,
+          "",
+          "",
+          {
+            Kindly_choice: true
+          }
+        );
+
+      }
+
+
+      options.forEach(option => {
+
+        addOption(
+          option.name,
+          option.address,
+          option.why_it_fits,
+          option
+        );
+
+      });
+
+
+      const selectedDate =
+        document.getElementById(
+          "calendarDate"
+        ).value || todayString();
+
+
+      const existingEvent =
+        getTaskEventForDate(
+          task,
+          selectedDate
+        );
+
+
+      let pickerHtml = "";
+
+
+      if (uniqueOptions.length) {
+
+        pickerHtml += `
+          <div class="location-box">
+
+            <div class="location-box-title">
+              Choose where to do this
+            </div>
+        `;
+
+
+        uniqueOptions.forEach(
+          (option, optionIndex) => {
+
+            const KindlyChoice =
+              isKindlyChoice(
+                option,
+                optionIndex
+              );
+
+
+            const optionLocation =
+              option.address
+                ? `${option.name} — ${option.address}`
+                : option.name;
+
+
+            const isAdded =
+              existingEvent &&
+              locationsMatch(
+                existingEvent.location,
+                optionLocation
+              );
+
+
+            const checked =
+              optionIndex === 0
+                ? "checked"
+                : "";
+
+
+            pickerHtml += `
+              <label
+                class="location-choice ${
+                  optionIndex === 0
+                    ? "selected"
+                    : ""
+                } ${isAdded ? "added" : ""}"
+                data-plan-index="${index}"
+                data-option-index="${optionIndex}"
+              >
+
+                <input
+                  type="radio"
+                  name="location-choice-${index}"
+                  value="${optionIndex}"
+                  ${checked}
+                />
+
+
+                <div class="location-choice-content">
+
+                  <div class="location-choice-name">
+
+                    ${esc(option.name)}
+
+                    ${
+                      KindlyChoice
+                        ? `
+                          <span class="Kindly-choice-badge">
+                            Kindly's choice
+                          </span>
+                        `
+                        : ""
+                    }
+
+
+                    <span class="calendar-added-badge">
+                      ✓ Added to calendar
+                    </span>
+
+                  </div>
+
+
+                  ${
+                    option.address
+                      ? `
+                        <div class="location-choice-address">
+                          ${esc(option.address)}
+                        </div>
+                      `
+                      : ""
+                  }
+
+
+                  ${
+                    option.why_it_fits
+                      ? `
+                        <div class="location-choice-reason">
+                          ${esc(option.why_it_fits)}
+                        </div>
+                      `
+                      : ""
+                  }
+
+                </div>
+
+              </label>
+            `;
+
+          }
+        );
+
+
+        const customAdded =
+          existingEvent &&
+          existingEvent.source === "custom";
+
+
+        pickerHtml += `
+          <label
+            class="location-choice ${
+              customAdded ? "added" : ""
+            }"
+            data-plan-index="${index}"
+            data-option-index="custom"
+          >
+
+            <input
+              type="radio"
+              name="location-choice-${index}"
+              value="custom"
+            />
+
+
+            <div class="location-choice-content">
+
+              <div class="location-choice-name">
+
+                Use my own location
+
+                <span class="calendar-added-badge">
+                  ✓ Added to calendar
+                </span>
+
+              </div>
+
+              <div class="location-choice-address">
+                Enter any place, address, or location you prefer.
+              </div>
+
+            </div>
+
+          </label>
+
+
+          <div
+            class="custom-location-wrap"
+            id="custom-location-wrap-${index}"
+          >
+
+            <input
+              id="custom-location-${index}"
+              type="text"
+              placeholder="Enter your own location..."
+              value="${
+                customAdded
+                  ? esc(existingEvent.location)
+                  : ""
+              }"
+            />
+
+          </div>
+
+
+          <div class="add-calendar-row">
+
+            <button
+              type="button"
+              class="btn add-to-calendar"
+              data-plan-index="${index}"
+            >
+              Add to calendar
+            </button>
+
+          </div>
+
+
+          <div
+            class="calendar-success-message"
+            id="calendar-success-${index}"
+            aria-live="polite"
+          ></div>
+
+          </div>
+        `;
+
+      } else {
+
+        const customLocation =
+          existingEvent?.location || "";
+
+
+        pickerHtml += `
+          <div class="location-box">
+
+            <div class="location-box-title">
+              Choose where to do this
+            </div>
+
+
+            <p class="sub">
+              No reliable location was found automatically,
+              so you can choose your own.
+            </p>
+
+
+            <div class="custom-location-wrap show">
+
+              <input
+                id="custom-location-${index}"
+                type="text"
+                placeholder="Enter your own location..."
+                value="${esc(customLocation)}"
+              />
+
+            </div>
+
+
+            <div class="add-calendar-row">
+
+              <button
+                type="button"
+                class="btn add-to-calendar"
+                data-plan-index="${index}"
+              >
+                Add to calendar
+              </button>
+
+            </div>
+
+
+            <div
+              class="calendar-success-message"
+              id="calendar-success-${index}"
+              aria-live="polite"
+            ></div>
+
+          </div>
+        `;
+
+      }
+
+
+      const resultHtml = `
+        <div
+          class="panel plan-item-panel"
+          data-plan-index="${index}"
+        >
+
+          <div class="tag">
+            ${esc(time)}
+          </div>
+
+
+          <div class="result-card">
+
+            <h3>
+              ${esc(task)}
+            </h3>
+
+
+            ${
+              reason
+                ? `
+                  <p>
+                    ${esc(reason)}
+                  </p>
+                `
+                : ""
+            }
+
+          </div>
+
+
+          ${pickerHtml}
+
+        </div>
+      `;
+
+
+      return resultHtml;
+
+    }
+
+
+    /* ==========================================================
+       UPDATE ADD / REMOVE BUTTON STATE
+    ========================================================== */
+
+    function updateCalendarButtonState(index) {
+
+      if (
+        !currentPlanData ||
+        !Array.isArray(currentPlanData.plan)
+      ) {
+        return;
+      }
+
+
+      const item =
+        currentPlanData.plan[index];
+
+
+      if (!item) {
+        return;
+      }
+
+
+      const panel =
+        document.querySelector(
+          `.plan-item-panel[data-plan-index="${index}"]`
+        );
+
+
+      if (!panel) {
+        return;
+      }
+
+
+      const selectedRadio =
+        panel.querySelector(
+          `input[name="location-choice-${index}"]:checked`
+        );
+
+
+      const selectedLocation =
+        getSelectedLocationFromPlan(
+          index
+        );
+
+
+      const selectedEvent =
+        getTaskEventForDate(
+          item.task || "Task",
+          document.getElementById("calendarDate").value ||
+            todayString()
+        );
+
+
+      const button =
+        panel.querySelector(
+          ".add-to-calendar"
+        );
+
+
+      if (!button) {
+        return;
+      }
+
+
+      button.classList.remove(
+        "added",
+        "switch"
+      );
+
+
+      if (!selectedEvent) {
+
+        button.textContent =
+          "Add to calendar";
+
+        return;
+
+      }
+
+
+      if (
+        selectedLocation &&
+        locationsMatch(
+          selectedLocation,
+          selectedEvent.location
+        )
+      ) {
+
+        button.classList.add("added");
+
+        button.textContent =
+          "✓ Remove from calendar";
+
+      } else {
+
+        button.classList.add("switch");
+
+        button.textContent =
+          "Switch to this option";
+
+      }
+
+    }
+
+
+    /* ==========================================================
+       GET SELECTED LOCATION
+    ========================================================== */
+
+    function getSelectedLocationFromPlan(index) {
+
+      if (
+        !currentPlanData ||
+        !Array.isArray(currentPlanData.plan)
+      ) {
+        return "";
+      }
+
+
+      const item =
+        currentPlanData.plan[index];
+
+
+      if (!item) {
+        return "";
+      }
+
+
+      const selectedRadio =
+        document.querySelector(
+          `input[name="location-choice-${index}"]:checked`
+        );
+
+
+      if (!selectedRadio) {
+        return "";
+      }
+
+
+      if (
+        selectedRadio.value ===
+        "custom"
+      ) {
+
+        const customInput =
+          document.getElementById(
+            `custom-location-${index}`
+          );
+
+
+        return customInput
+          ? customInput.value.trim()
+          : "";
+
+      }
+
+
+      const optionIndex =
+        Number(selectedRadio.value);
+
+
+      const generatedOptions = [];
+      const seen = new Set();
+
+
+      function addValidOption(
+        name,
+        address,
+        why
+      ) {
+
+        const cleanName =
+          String(name || "").trim();
+
+
+        const cleanAddress =
+          String(address || "").trim();
+
+
+        if (!cleanName) {
+          return;
+        }
+
+
+        if (
+          cleanName.toLowerCase() ===
+          "no reliable location found"
+        ) {
+          return;
+        }
+
+
+        const key =
+          `${cleanName}|${cleanAddress}`.toLowerCase();
+
+
+        if (seen.has(key)) {
+          return;
+        }
+
+
+        seen.add(key);
+
+
+        generatedOptions.push({
+          name: cleanName,
+          address: cleanAddress,
+          why_it_fits:
+            String(why || "").trim()
+        });
+
+      }
+
+
+      if (
+        item.location &&
+        item.location.toLowerCase() !==
+          "no reliable location found"
+      ) {
+
+        addValidOption(
+          item.location,
+          "",
+          ""
+        );
+
+      }
+
+
+      if (
+        Array.isArray(
+          item.location_options
+        )
+      ) {
+
+        item.location_options.forEach(
+          option => {
+
+            addValidOption(
+              option.name,
+              option.address,
+              option.why_it_fits
+            );
+
+          }
+        );
+
+      }
+
+
+      const chosen =
+        generatedOptions[optionIndex];
+
+
+      if (!chosen) {
+        return "";
+      }
+
+
+      return chosen.address
+        ? `${chosen.name} — ${chosen.address}`
+        : chosen.name;
+
+    }
+
+
+    /* ==========================================================
+       LOCATION PICKER EVENTS
+    ========================================================== */
+
+    function attachLocationPickerEvents() {
+
+      const radios =
+        document.querySelectorAll(
+          'input[type="radio"][name^="location-choice-"]'
+        );
+
+
+      radios.forEach(radio => {
+
+        radio.addEventListener("change", () => {
+
+          const planIndex =
+            radio.name.replace(
+              "location-choice-",
+              ""
+            );
+
+
+          const choices =
+            document.querySelectorAll(
+              `.location-choice[data-plan-index="${planIndex}"]`
+            );
+
+
+          choices.forEach(choice => {
+            choice.classList.remove("selected");
+          });
+
+
+          const selectedChoice =
+            radio.closest(".location-choice");
+
+
+          if (selectedChoice) {
+            selectedChoice.classList.add("selected");
+          }
+
+
+          const customWrap =
+            document.getElementById(
+              `custom-location-wrap-${planIndex}`
+            );
+
+
+          if (customWrap) {
+
+            if (radio.value === "custom") {
+              customWrap.classList.add("show");
+            } else {
+              customWrap.classList.remove("show");
+            }
+
+          }
+
+
+          updateCalendarButtonState(
+            Number(planIndex)
+          );
+
+        });
+
+      });
+
+
+      /*
+        Typing into a custom location should also update
+        whether the button is Add / Switch / Remove.
+      */
+
+      document
+        .querySelectorAll(
+          'input[id^="custom-location-"]'
+        )
+        .forEach(input => {
+
+          input.addEventListener(
+            "input",
+            () => {
+
+              const index =
+                Number(
+                  input.id.replace(
+                    "custom-location-",
+                    ""
+                  )
+                );
+
+
+              updateCalendarButtonState(
+                index
+              );
+
+            }
+          );
+
+        });
+
+
+      const addButtons =
+        document.querySelectorAll(
+          ".add-to-calendar"
+        );
+
+
+      addButtons.forEach(button => {
+
+        const index =
+          Number(
+            button.dataset.planIndex
+          );
+
+
+        updateCalendarButtonState(
+          index
+        );
+
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            handleCalendarButton(
+              index
+            );
+
+          }
+        );
+
+      });
+
+
+      /*
+        Restore the persistent confirmation message
+        for anything already on the calendar.
+      */
+
+      if (
+        currentPlanData &&
+        Array.isArray(currentPlanData.plan)
+      ) {
+
+        currentPlanData.plan.forEach(
+          (item, index) => {
+
+            restoreAddedState(
+              item,
+              index
+            );
+
+          }
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================================
+       ADD / SWITCH / REMOVE
+    ========================================================== */
+
+    function handleCalendarButton(index) {
+
+      if (
+        !currentPlanData ||
+        !Array.isArray(currentPlanData.plan)
+      ) {
+        return;
+      }
+
+
+      const item =
+        currentPlanData.plan[index];
+
+
+      if (!item) {
+        return;
+      }
+
+
+      const date =
+        document.getElementById(
+          "calendarDate"
+        ).value || todayString();
+
+
+      const selectedLocation =
+        getSelectedLocationFromPlan(
+          index
+        );
+
+
+      if (!selectedLocation) {
+
+        alert(
+          "Please choose or enter a location first."
+        );
+
+        return;
+
+      }
+
+
+      const existingEvent =
+        getTaskEventForDate(
+          item.task || "Task",
+          date
+        );
+
+
+      /*
+        If the currently selected option is already
+        on the calendar, clicking the button removes it.
+      */
+
+      if (
+        existingEvent &&
+        locationsMatch(
+          existingEvent.location,
+          selectedLocation
+        )
+      ) {
+
+        removeCalendarEvent(
+          existingEvent.id
+        );
+
+
+        showRemovedState(
+          index,
+          item
+        );
+
+
+        return;
+      }
+
+
+      /*
+        If another location for this same task is already
+        on the date, replace it with the newly selected one.
+      */
+
+      addOrSwitchPlanItem(
+        index,
+        selectedLocation,
+        date,
+        existingEvent
+      );
+
+    }
+
+
+    /* ==========================================================
+       ADD OR SWITCH CALENDAR EVENT
+    ========================================================== */
+
+    function addOrSwitchPlanItem(
+      index,
+      location,
+      date,
+      existingEvent
+    ) {
+
+      const item =
+        currentPlanData.plan[index];
+
+
+      let events =
+        getCalendar();
+
+
+      if (existingEvent) {
+
+        events =
+          events.filter(
+            event =>
+              event.id !== existingEvent.id
+          );
+
+      }
+
+
+      const event = {
+
+        id:
+          Date.now().toString() +
+          "-" +
+          Math.random()
+            .toString(36)
+            .slice(2, 9),
+
+        date:
+
+          date,
+
+        time:
+          item.time ||
+          "Flexible time",
+
+        task:
+          item.task ||
+          "Task",
+
+        location:
+          location,
+
+        reason:
+          item.reason ||
+          "",
+
+        source:
+          document.querySelector(
+            `input[name="location-choice-${index}"]:checked`
+          )?.value === "custom"
+            ? "custom"
+            : "suggested"
+
+      };
+
+
+      events.push(event);
+
+      saveCalendar(events);
+
+
+      showAddedState(
+        index,
+        item,
+        location,
+        Boolean(existingEvent),
+        date
+      );
+
+
+      /*
+        Re-rendering the calendar makes the new event
+        immediately visible.
+      */
+
+      renderCalendar();
+
+
+      /*
+        Then restore the planner's state because rendering
+        the calendar doesn't need to destroy the planner.
+      */
+
+      updateCalendarButtonState(
+        index
+      );
+
+    }
+
+
+    /* ==========================================================
+       RESTORE ADDED STATE
+    ========================================================== */
+
+    function restoreAddedState(
+      item,
+      index
+    ) {
+
+      const date =
+        document.getElementById(
+          "calendarDate"
+        ).value || todayString();
+
+
+      const existingEvent =
+        getTaskEventForDate(
+          item.task || "Task",
+          date
+        );
+
+
+      if (!existingEvent) {
+        return;
+      }
+
+
+      const panel =
+        document.querySelector(
+          `.plan-item-panel[data-plan-index="${index}"]`
+        );
+
+
+      if (!panel) {
+        return;
+      }
+
+
+      const choices =
+        panel.querySelectorAll(
+          ".location-choice"
+        );
+
+
+      choices.forEach(choice => {
+
+        const radio =
+          choice.querySelector(
+            'input[type="radio"]'
+          );
+
+
+        if (!radio) {
+          return;
+        }
+
+
+        let location = "";
+
+
+        if (
+          radio.value === "custom"
+        ) {
+
+          location =
+            document.getElementById(
+              `custom-location-${index}`
+            )?.value.trim() || "";
+
+        } else {
+
+          /*
+            Temporarily use the radio to calculate
+            its generated location.
+          */
+
+          location =
+            getLocationForOption(
+              item,
+              Number(radio.value)
+            );
+
+        }
+
+
+        if (
+          locationsMatch(
+            location,
+            existingEvent.location
+          )
+        ) {
+
+          choice.classList.add(
+            "added"
+          );
+
+        }
+
+      });
+
+
+      updateCalendarButtonState(
+        index
+      );
+
+
+      const success =
+        document.getElementById(
+          `calendar-success-${index}`
+        );
+
+
+      if (success) {
+
+        success.classList.add("show");
+
+
+        success.innerHTML = `
+          ✓ <strong>${esc(item.task || "This task")}</strong>
+          is on your calendar for
+          <strong>${esc(formatCalendarDate(date))}</strong>.
+          <br />
+          <span class="calendar-remove-note">
+            Location: ${esc(existingEvent.location)}
+            · Use the button above to remove it or switch locations.
+          </span>
+        `;
+
+      }
+
+    }
+
+
+    /* ==========================================================
+       GET LOCATION FOR OPTION
+    ========================================================== */
+
+    function getLocationForOption(
+      item,
+      optionIndex
+    ) {
+
+      const generatedOptions = [];
+      const seen = new Set();
+
+
+      function addValidOption(
+        name,
+        address
+      ) {
+
+        const cleanName =
+          String(name || "").trim();
+
+
+        const cleanAddress =
+          String(address || "").trim();
+
+
+        if (!cleanName) {
+          return;
+        }
+
+
+        if (
+          cleanName.toLowerCase() ===
+          "no reliable location found"
+        ) {
+          return;
+        }
+
+
+        const key =
+          `${cleanName}|${cleanAddress}`.toLowerCase();
+
+
+        if (seen.has(key)) {
+          return;
+        }
+
+
+        seen.add(key);
+
+
+        generatedOptions.push({
+          name: cleanName,
+          address: cleanAddress
+        });
+
+      }
+
+
+      if (
+        item.location &&
+        item.location.toLowerCase() !==
+          "no reliable location found"
+      ) {
+
+        addValidOption(
+          item.location,
+          ""
+        );
+
+      }
+
+
+      if (
+        Array.isArray(
+          item.location_options
+        )
+      ) {
+
+        item.location_options.forEach(
+          option => {
+
+            addValidOption(
+              option.name,
+              option.address
+            );
+
+          }
+        );
+
+      }
+
+
+      const chosen =
+        generatedOptions[optionIndex];
+
+
+      if (!chosen) {
+        return "";
+      }
+
+
+      return chosen.address
+        ? `${chosen.name} — ${chosen.address}`
+        : chosen.name;
+
+    }
+
+
+    /* ==========================================================
+       SHOW ADDED STATE
+    ========================================================== */
+
+    function showAddedState(
+      index,
+      item,
+      location,
+      switched,
+      date
+    ) {
+
+      const panel =
+        document.querySelector(
+          `.plan-item-panel[data-plan-index="${index}"]`
+        );
+
+
+      if (!panel) {
+        return;
+      }
+
+
+      const selectedLocation =
+        getSelectedLocationFromPlan(
+          index
+        );
+
+
+      const choices =
+        panel.querySelectorAll(
+          ".location-choice"
+        );
+
+
+      choices.forEach(choice => {
+
+        choice.classList.remove(
+          "added"
+        );
+
+
+        const radio =
+          choice.querySelector(
+            'input[type="radio"]'
+          );
+
+
+        if (!radio) {
+          return;
+        }
+
+
+        let choiceLocation = "";
+
+
+        if (
+          radio.value === "custom"
+        ) {
+
+          choiceLocation =
+            document.getElementById(
+              `custom-location-${index}`
+            )?.value.trim() || "";
+
+        } else {
+
+          choiceLocation =
+            getLocationForOption(
+              item,
+              Number(radio.value)
+            );
+
+        }
+
+
+        if (
+          locationsMatch(
+            choiceLocation,
+            selectedLocation
+          )
+        ) {
+
+          choice.classList.add(
+            "added"
+          );
+
+        }
+
+      });
+
+
+      const success =
+        document.getElementById(
+          `calendar-success-${index}`
+        );
+
+
+      if (success) {
+
+        success.classList.add("show");
+
+
+        success.innerHTML = `
+          ✓ <strong>${esc(item.task || "This task")}</strong>
+          ${switched ? "was switched to" : "was added to"}
+          your calendar for
+          <strong>${esc(formatCalendarDate(date))}</strong>.
+          <br />
+          <span class="calendar-remove-note">
+            Location: ${esc(location)}
+            · You can remove it or switch to another option anytime.
+          </span>
+        `;
+
+      }
+
+
+      updateCalendarButtonState(
+        index
+      );
+
+    }
+
+
+    /* ==========================================================
+       SHOW REMOVED STATE
+    ========================================================== */
+
+    function showRemovedState(
+      index,
+      item
+    ) {
+
+      const panel =
+        document.querySelector(
+          `.plan-item-panel[data-plan-index="${index}"]`
+        );
+
+
+      if (!panel) {
+        return;
+      }
+
+
+      const choices =
+        panel.querySelectorAll(
+          ".location-choice"
+        );
+
+
+      choices.forEach(choice => {
+        choice.classList.remove(
+          "added"
+        );
+      });
+
+
+      const success =
+        document.getElementById(
+          `calendar-success-${index}`
+        );
+
+
+      if (success) {
+
+        success.classList.add("show");
+
+
+        success.innerHTML = `
+          ✓ <strong>${esc(item.task || "This task")}</strong>
+          was removed from your calendar.
+          <br />
+          <span class="calendar-remove-note">
+            Choose another location and add it whenever you're ready.
+          </span>
+        `;
+
+      }
+
+
+      updateCalendarButtonState(
+        index
+      );
+
+    }
+
+
+    /* ==========================================================
+       CALENDAR
+    ========================================================== */
+
+    const calendarDate =
+      document.getElementById(
+        "calendarDate"
+      );
+
+
+    calendarDate.value =
+      todayString();
+
+
+    calendarDate.addEventListener(
+      "change",
+      () => {
+
+        renderCalendar();
+
+
+        /*
+          If the planner is already showing results,
+          update their Add / Switch / Remove states
+          for the newly selected day.
+        */
+
+        if (
+          currentPlanData &&
+          Array.isArray(currentPlanData.plan)
+        ) {
+
+          renderPlan(
+            currentPlanData
+          );
+
+        }
+
+      }
+    );
+
+
+    const prevMonthBtn =
+      document.getElementById(
+        "prevMonthBtn"
+      );
+
+
+    const nextMonthBtn =
+      document.getElementById(
+        "nextMonthBtn"
+      );
+
+
+    const todayCalendarBtn =
+      document.getElementById(
+        "todayCalendarBtn"
+      );
+
+
+    prevMonthBtn.addEventListener(
+      "click",
+      () => {
+
+        const current =
+          new Date(
+            calendarDate.value +
+            "T00:00:00"
+          );
+
+
+        current.setMonth(
+          current.getMonth() - 1
+        );
+
+
+        calendarDate.value =
+          `${current.getFullYear()}-${String(
+            current.getMonth() + 1
+          ).padStart(2, "0")}-01`;
+
+
+        renderCalendar();
+
+      }
+    );
+
+
+    nextMonthBtn.addEventListener(
+      "click",
+      () => {
+
+        const current =
+          new Date(
+            calendarDate.value +
+            "T00:00:00"
+          );
+
+
+        current.setMonth(
+          current.getMonth() + 1
+        );
+
+
+        calendarDate.value =
+          `${current.getFullYear()}-${String(
+            current.getMonth() + 1
+          ).padStart(2, "0")}-01`;
+
+
+        renderCalendar();
+
+      }
+    );
+
+
+    todayCalendarBtn.addEventListener(
+      "click",
+      () => {
+
+        calendarDate.value =
+          todayString();
+
+
+        renderCalendar();
+
+      }
+    );
+
+
+    /* ==========================================================
+       RENDER MONTHLY CALENDAR
+    ========================================================== */
+
+    function renderCalendar() {
+
+      const result =
+        document.getElementById(
+          "calendarResult"
+        );
+
+
+      const selectedDate =
+        calendarDate.value ||
+        todayString();
+
+
+      const selected =
+        new Date(
+          selectedDate +
+          "T00:00:00"
+        );
+
+
+      const year =
+        selected.getFullYear();
+
+
+      const month =
+        selected.getMonth();
+
+
+      const allEvents =
+        getCalendar();
+
+
+      const eventsByDate = {};
+
+
+      allEvents.forEach(event => {
+
+        if (!eventsByDate[event.date]) {
+          eventsByDate[event.date] = [];
+        }
+
+
+        eventsByDate[event.date].push(event);
+
+      });
+
+
+      const monthTitle =
+        document.getElementById(
+          "calendarMonthTitle"
+        );
+
+
+      if (monthTitle) {
+
+        monthTitle.textContent =
+          selected.toLocaleDateString(
+            undefined,
+            {
+              month: "long",
+              year: "numeric"
+            }
+          );
+
+      }
+
+
+      const firstDay =
+        new Date(
+          year,
+          month,
+          1
+        ).getDay();
+
+
+      const daysInMonth =
+        new Date(
+          year,
+          month + 1,
+          0
+        ).getDate();
+
+
+      const daysInPreviousMonth =
+        new Date(
+          year,
+          month,
+          0
+        ).getDate();
+
+
+      let html = `
+
+        <div class="calendar-shell">
+
+          <div class="calendar-weekdays">
+
+            <div class="calendar-weekday">Sun</div>
+            <div class="calendar-weekday">Mon</div>
+            <div class="calendar-weekday">Tue</div>
+            <div class="calendar-weekday">Wed</div>
+            <div class="calendar-weekday">Thu</div>
+            <div class="calendar-weekday">Fri</div>
+            <div class="calendar-weekday">Sat</div>
+
+          </div>
+
+
+          <div class="calendar-grid">
+
+      `;
+
+
+      for (let cell = 0; cell < 42; cell++) {
+
+        let cellYear = year;
+        let cellMonth = month;
+        let dayNumber;
+        let isOtherMonth = false;
+
+
+        if (cell < firstDay) {
+
+          dayNumber =
+            daysInPreviousMonth -
+            firstDay +
+            cell +
+            1;
+
+
+          cellMonth = month - 1;
+          isOtherMonth = true;
+
+
+          if (cellMonth < 0) {
+            cellMonth = 11;
+            cellYear--;
+          }
+
+        } else if (
+          cell <
+          firstDay + daysInMonth
+        ) {
+
+          dayNumber =
+            cell -
+            firstDay +
+            1;
+
+        } else {
+
+          dayNumber =
+            cell -
+            (firstDay + daysInMonth) +
+            1;
+
+
+          cellMonth = month + 1;
+          isOtherMonth = true;
+
+
+          if (cellMonth > 11) {
+            cellMonth = 0;
+            cellYear++;
+          }
+
+        }
+
+
+        const cellDate =
+          `${cellYear}-${String(
+            cellMonth + 1
+          ).padStart(2, "0")}-${String(
+            dayNumber
+          ).padStart(2, "0")}`;
+
+
+        const dayEvents =
+          eventsByDate[cellDate] || [];
+
+
+        const isToday =
+          cellDate === todayString();
+
+
+        const isSelected =
+          cellDate === selectedDate;
+
+
+        const classes = [
+          "calendar-day",
+
+          isOtherMonth
+            ? "other-month"
+            : "",
+
+          isToday
+            ? "today"
+            : "",
+
+          isSelected
+            ? "selected"
+            : ""
+        ]
+          .filter(Boolean)
+          .join(" ");
+
+
+        html += `
+
+          <button
+            type="button"
+            class="${classes}"
+            data-calendar-date="${cellDate}"
+            aria-label="${esc(formatCalendarDate(cellDate))}"
+          >
+
+            <div class="calendar-day-header">
+
+              <div class="calendar-day-number">
+                ${dayNumber}
+              </div>
+
+            </div>
+
+
+            <div class="calendar-events">
+
+        `;
+
+
+        const visibleEvents =
+          dayEvents.slice(0, 3);
+
+
+        visibleEvents.forEach(event => {
+
+          html += `
+
+            <div
+              class="calendar-event"
+              data-event-id="${esc(event.id)}"
+              title="${esc(event.task)}"
+            >
+
+              <span class="calendar-event-time">
+                ${esc(event.time || "Flexible")}
+              </span>
+
+              <span class="calendar-event-title">
+                ${esc(event.task)}
+              </span>
+
+            </div>
+
+          `;
+
+        });
+
+
+        if (dayEvents.length > 3) {
+
+          html += `
+            <div class="calendar-more">
+              +${dayEvents.length - 3} more
+            </div>
+          `;
+
+        }
+
+
+        html += `
+            </div>
+          </button>
+        `;
+
+      }
+
+
+      html += `
+          </div>
+        </div>
+      `;
+
+
+      const selectedEvents =
+        eventsByDate[selectedDate] || [];
+
+
+      const selectedDateFormatted =
+        formatCalendarDate(
+          selectedDate
+        );
+
+
+      html += `
+
+        <div class="calendar-day-details">
+
+          <div class="calendar-day-details-header">
+
+            <h3 class="calendar-day-details-title">
+              ${esc(selectedDateFormatted)}
+            </h3>
+
+
+            <span class="calendar-count">
+
+              ${selectedEvents.length}
+
+              ${
+                selectedEvents.length === 1
+                  ? "task"
+                  : "tasks"
+              }
+
+            </span>
+
+          </div>
+
+      `;
+
+
+      if (!selectedEvents.length) {
+
+        html += `
+
+          <div class="calendar-empty">
+
+            <strong>
+              Nothing planned for this day.
+            </strong>
+
+            Choose another date or add a task
+            from the Planner.
+
+          </div>
+
+        `;
+
+      } else {
+
+        selectedEvents.forEach(event => {
+
+          html += `
+
+            <div
+              class="calendar-detail-event"
+              data-event-id="${esc(event.id)}"
+            >
+
+              <div class="calendar-detail-time">
+                ${esc(event.time || "Flexible time")}
+              </div>
+
+
+              <div>
+
+                <p class="calendar-detail-task">
+                  ${esc(event.task)}
+                </p>
+
+
+                ${
+                  event.location
+                    ? `
+                      <p class="calendar-detail-location">
+                        📍 ${esc(event.location)}
+                      </p>
+                    `
+                    : ""
+                }
+
+              </div>
+
+
+              <button
+                type="button"
+                class="remove-event"
+                data-event-id="${esc(event.id)}"
+              >
+                Remove
+              </button>
+
+            </div>
+
+          `;
+
+        });
+
+      }
+
+
+      html += `
+        </div>
+      `;
+
+
+      result.innerHTML = html;
+
+
+      /*
+        Clicking a day.
+      */
+
+      result
+        .querySelectorAll(".calendar-day")
+        .forEach(day => {
+
+          day.addEventListener("click", () => {
+
+            const date =
+              day.dataset.calendarDate;
+
+
+            calendarDate.value = date;
+
+            renderCalendar();
+
+          });
+
+        });
+
+
+      /*
+        Clicking an event jumps to that event's day.
+      */
+
+      result
+        .querySelectorAll(".calendar-event")
+        .forEach(eventElement => {
+
+          eventElement.addEventListener(
+            "click",
+            event => {
+
+              event.stopPropagation();
+
+
+              const id =
+                eventElement.dataset.eventId;
+
+
+              const clickedEvent =
+                allEvents.find(
+                  item =>
+                    item.id === id
+                );
+
+
+              if (!clickedEvent) {
+                return;
+              }
+
+
+              calendarDate.value =
+                clickedEvent.date;
+
+
+              renderCalendar();
+
+            }
+          );
+
+        });
+
+
+      /*
+        Remove buttons.
+      */
+
+      result
+        .querySelectorAll(".remove-event")
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            event => {
+
+              event.stopPropagation();
+
+
+              removeCalendarEvent(
+                button.dataset.eventId
+              );
+
+            }
+          );
+
+        });
+
+    }
+
+
+    /* ==========================================================
+       REMOVE CALENDAR EVENT
+    ========================================================== */
+
+    function removeCalendarEvent(id) {
+
+      const events =
+        getCalendar();
+
+
+      const updated =
+        events.filter(
+          event =>
+            event.id !== id
+        );
+
+
+      saveCalendar(updated);
+
+      renderCalendar();
+
+    }
+
+
+    /* ==========================================================
+       CLEAR CURRENT DAY
+    ========================================================== */
+
+    const clearCalendarBtn =
+      document.getElementById(
+        "clearCalendarBtn"
+      );
+
+
+    clearCalendarBtn.addEventListener(
+      "click",
+      () => {
+
+        const selectedDate =
+          calendarDate.value ||
+          todayString();
+
+
+        const events =
+          getCalendar();
+
+
+        const dayEvents =
+          events.filter(
+            event =>
+              event.date === selectedDate
+          );
+
+
+        if (!dayEvents.length) {
+          return;
+        }
+
+
+        const confirmed =
+          confirm(
+            "Clear all tasks from this day?"
+          );
+
+
+        if (!confirmed) {
+          return;
+        }
+
+
+        const remaining =
+          events.filter(
+            event =>
+              event.date !== selectedDate
+          );
+
+
+        saveCalendar(remaining);
+
+        renderCalendar();
+
+
+        /*
+          Refresh planner states too.
+        */
+
+        if (
+          currentPlanData &&
+          Array.isArray(currentPlanData.plan)
+        ) {
+
+          renderPlan(
+            currentPlanData
+          );
+
+        }
+
+      }
+    );
+
+
+    /* ==========================================================
+       APPOINTMENTS
+    ========================================================== */
+
+    const appointmentBtn =
+      document.getElementById(
+        "appointmentBtn"
+      );
+
+
+    const appointmentLoading =
+      document.getElementById(
+        "appointmentLoading"
+      );
+
+
+    const appointmentError =
+      document.getElementById(
+        "appointmentError"
+      );
+
+
+    const appointmentResult =
+      document.getElementById(
+        "appointmentResult"
+      );
+
+
+    let currentAppointmentContext = null;
+
+    appointmentBtn.addEventListener(
+      "click",
+      async () => {
+
+        const what =
+          document
+            .getElementById(
+              "appointmentWhat"
+            )
+            .value
+            .trim();
+
+
+        const where =
+          document
+            .getElementById(
+              "appointmentWhere"
+            )
+            .value
+            .trim();
+
+
+        const when =
+          document
+            .getElementById(
+              "appointmentWhen"
+            )
+            .value
+            .trim();
+
+
+        const extras =
+          document
+            .getElementById(
+              "appointmentExtras"
+            )
+            .value
+            .trim();
+
+
+        appointmentError.classList.remove(
+          "show"
+        );
+
+
+        appointmentError.textContent = "";
+
+        appointmentResult.innerHTML = "";
+
+
+        if (!what || !where || !when) {
+
+          showAppointmentError(
+            "Please fill in what, where, and when."
+          );
+
+          return;
+        }
+
+
+        currentAppointmentContext = {
+          what,
+          where,
+          when,
+          extras
+        };
+
+        appointmentBtn.disabled = true;
+
+        appointmentLoading.classList.add(
+          "show"
+        );
+
+        showKindlyLoading(
+          appointmentLoadingMessages
+        );
+
+
+        try {
+
+          const response =
+            await fetch(
+              "/api/appointments",
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify({
+                    what,
+                    where,
+                    when,
+                    extras
+                  })
+              }
+            );
+
+
+          const data =
+            await response.json();
+
+
+          if (
+            !response.ok ||
+            data.error
+          ) {
+
+            throw new Error(
+              data.error ||
+              "Could not find appointments."
+            );
+
+          }
+
+
+          renderAppointments(
+            data.result
+          );
+
+        } catch (error) {
+
+          console.error(error);
+
+
+          showAppointmentError(
+            error.message ||
+            "Something went wrong."
+          );
+
+        } finally {
+
+          appointmentBtn.disabled = false;
+
+          appointmentLoading.classList.remove(
+            "show"
+          );
+
+          hideKindlyLoading();
+
+        }
+
+      }
+    );
+
+
+    function showAppointmentError(message) {
+
+      appointmentError.textContent =
+        message;
+
+
+      appointmentError.classList.add(
+        "show"
+      );
+
+    }
+
+
+    /* ==========================================================
+       RENDER APPOINTMENTS
+    ========================================================== */
+
+      function renderAppointments(result) {
+
+        if (!result) {
+          appointmentResult.innerHTML = "";
+          return;
+        }
+
+
+        const options =
+          Array.isArray(result.options)
+            ? result.options
+            : [];
+
+
+        let html = "";
+
+
+        /* ========================================================
+          SEARCH SUMMARY
+        ======================================================== */
+
+        if (result.query_summary) {
+
+          html += `
+            <div class="summary-box">
+
+              <p>
+                ${esc(result.query_summary)}
+              </p>
+
+            </div>
+          `;
+
+        }
+
+
+        /* ========================================================
+          NO RESULTS
+        ======================================================== */
+
+        if (!options.length) {
+
+          html += `
+            <div class="panel">
+
+              <div class="calendar-empty">
+
+                <strong>
+                  We couldn't find strong options.
+                </strong>
+
+                Try changing the location,
+                timing, or appointment type.
+
+              </div>
+
+            </div>
+          `;
+
+          appointmentResult.innerHTML =
+            html;
+
+          return;
+        }
+
+
+        /* ========================================================
+          APPOINTMENT OPTIONS
+        ======================================================== */
+
+        html += `
+          <div style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
+            margin: 4px 0 14px;
+          ">
+
+            <div>
+              <h2 style="
+                margin:0 0 4px;
+                letter-spacing:-0.03em;
+              ">
+                Appointment options
+              </h2>
+
+              <p class="sub">
+                Choose a place to check its live availability.
+              </p>
+            </div>
+
+            <span class="calendar-count">
+              ${options.length}
+              ${options.length === 1 ? "option" : "options"}
+            </span>
+
+          </div>
+        `;
+
+
+        options.forEach(
+          (option, index) => {
+
+            const hasBookingUrl =
+              Boolean(
+                option.booking_url
+              );
+
+
+            html += `
+              <div
+                class="panel appointment-option"
+                data-appointment-index="${index}"
+              >
+
+                <div class="appointment-option-top">
+
+                  <div class="appointment-option-info">
+
+                    <div class="appointment-meta">
+
+                      <span class="appointment-meta-chip">
+                        Option ${index + 1}
+                      </span>
+
+                      ${
+                        index === 0
+                          ? `
+                            <span class="appointment-recommended">
+                              Kindly's choice
+                            </span>
+                          `
+                          : ""
+                      }
+
+                    </div>
+
+
+                    <h3>
+                      ${esc(
+                        option.name ||
+                        "Appointment option"
+                      )}
+                    </h3>
+
+
+                    ${
+                      option.address
+                        ? `
+                          <p>
+                            <strong>Location</strong><br>
+                            ${esc(option.address)}
+                          </p>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                      option.hours
+                        ? `
+                          <p>
+                            <strong>Hours</strong><br>
+                            ${esc(option.hours)}
+                          </p>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                      option.why_it_fits
+                        ? `
+                          <p>
+                            ${esc(option.why_it_fits)}
+                          </p>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                      option.evidence
+                        ? `
+                          <p>
+                            <strong>Why we found it</strong><br>
+                            ${esc(option.evidence)}
+                          </p>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                      hasBookingUrl
+                        ? `
+                          <a
+                            class="appointment-booking-link"
+                            href="${esc(option.booking_url)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Open booking website ↗
+                          </a>
+                        `
+                        : ""
+                    }
+
+                  </div>
+
+
+                  <div class="appointment-option-actions">
+
+                    <button
+                      type="button"
+                      class="btn appointment-select-btn"
+                      data-appointment-index="${index}"
+                    >
+                      Check live availability
+                    </button>
+
+                  </div>
+
+                </div>
+
+
+                <div
+                  class="availability-box"
+                  id="availability-${index}"
+                  style="display:none;"
+                >
+                </div>
+
+              </div>
+            `;
+
+          }
+        );
+
+
+  /* ========================================================
+     NOTES
+  ======================================================== */
+
+  if (
+    Array.isArray(result.notes) &&
+    result.notes.length
+  ) {
+
+    html += `
+      <div class="panel">
+
+        <h2 style="margin-top:0;">
+          A few things to know
+        </h2>
+
+        <ul class="why-list">
+
+          ${result.notes
+            .map(
+              note =>
+                `<li>${esc(note)}</li>`
+            )
+            .join("")}
+
+        </ul>
+
+      </div>
+    `;
+
+  }
+
+
+  appointmentResult.innerHTML =
+    html;
+
+
+  /* ========================================================
+     BUTTON EVENTS
+  ======================================================== */
+
+  appointmentResult
+    .querySelectorAll(
+      ".appointment-select-btn"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const index =
+            Number(
+              button.dataset
+                .appointmentIndex
+            );
+
+
+          checkAppointmentAvailability(
+            options[index],
+            index
+          );
+
+        }
+      );
+
+    });
+
+}
+
+
+    /* ==========================================================
+       CHECK LIVE APPOINTMENT AVAILABILITY
+    ========================================================== */
+
+    async function checkAppointmentAvailability(option, index) {
+      if (!currentAppointmentContext || !option) {
+        return;
+      }
+
+      const box = document.getElementById(`availability-${index}`);
+      const card = document.querySelector(
+        `.appointment-option[data-appointment-index="${index}"]`
+      );
+      const button = document.querySelector(
+        `.appointment-select-btn[data-appointment-index="${index}"]`
+      );
+
+      if (!box) {
+        return;
+      }
+
+      document
+        .querySelectorAll(".appointment-option")
+        .forEach(item => item.classList.remove("selected"));
+
+      if (card) {
+        card.classList.add("selected");
+      }
+
+      box.style.display = "block";
+      showKindlyLoading([
+      "Opening the booking website...",
+      "Finding the right service...",
+      "Checking the requested date...",
+      "Looking for available times...",
+      "Almost there..."
+    ]);
+      box.innerHTML = `
+        <div class="loading show">
+          Kindly is visiting the booking website and checking
+          ${esc(currentAppointmentContext.when)}...
+        </div>
+      `;
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = "Checking...";
+      }
+
+      try {
+        const response = await fetch(
+          "/api/appointments/availability",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              name: option.name,
+              address: option.address || "",
+              booking_url: option.booking_url || "",
+              what: currentAppointmentContext.what,
+              when: currentAppointmentContext.when,
+              extras: currentAppointmentContext.extras
+            })
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+          throw new Error(
+            data.error || "Kindly could not check this booking website."
+          );
+        }
+
+        renderAvailability(data, option, index);
+      } catch (error) {
+        console.error(error);
+        box.innerHTML = `
+          <span class="availability-status unable">Unable to verify</span>
+          <p class="availability-message">
+            ${esc(error.message || "Something went wrong while checking availability.")}
+          </p>
+        `;
+      } finally {
+
+        hideKindlyLoading();
+
+        if (button) {
+          button.disabled = false;
+          button.textContent = "Check again";
+        }
+      }
+    }
+
+
+    /* ==========================================================
+       RENDER REAL AVAILABILITY SLOTS
+    ========================================================== */
+
+    function renderAvailability(data, option, index) {
+      const box = document.getElementById(`availability-${index}`);
+
+      if (!box) {
+        return;
+      }
+
+      const result = data.result || {};
+      const status = String(result.status || "").toLowerCase();
+
+      const slots = Array.isArray(result.slots)
+        ? result.slots.filter(slot =>
+            String(slot.availability || "").toLowerCase() === "available"
+          )
+        : [];
+
+      const statusClass =
+        status === "confirmed" ? "confirmed" : "unable";
+
+      const statusText =
+        status === "confirmed"
+          ? "Live availability"
+          : "Unable to verify";
+
+      let html = `
+        <div class="availability-header">
+          <h4>Available times</h4>
+          <span class="availability-status ${statusClass}">
+            ${esc(statusText)}
+          </span>
+        </div>
+      `;
+
+      if (result.message) {
+        html += `
+          <p class="availability-message">
+            ${esc(result.message)}
+          </p>
+        `;
+      }
+
+      if (!slots.length) {
+        html += `
+          <p class="availability-message">
+            ${
+              status === "confirmed"
+                ? "No available times were found for the requested time."
+                : "The booking site could not be verified automatically."
+            }
+          </p>
+        `;
+
+        if (result.manual_action_required) {
+          html += `
+            <p class="availability-message">
+              You may need to continue manually on the booking site.
+            </p>
+          `;
+        }
+
+        if (option.booking_url) {
+          html += `
+            <p>
+              <a href="${esc(option.booking_url)}"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                Open booking page
+              </a>
+            </p>
+          `;
+        }
+
+        box.innerHTML = html;
+        return;
+      }
+
+      html += `<div class="slot-list">`;
+
+      slots.forEach((slot, slotIndex) => {
+        html += `
+          <button
+            type="button"
+            class="slot-btn"
+            data-appointment-index="${index}"
+            data-slot-index="${slotIndex}">
+            ${esc(slot.date || "")}
+            ${slot.date && slot.time ? " · " : ""}
+            ${esc(slot.time || "Available")}
+          </button>
+        `;
+      });
+
+      html += `
+        </div>
+        <div class="appointment-calendar-note"
+             id="appointment-calendar-note-${index}">
+        </div>
+      `;
+
+      box.innerHTML = html;
+
+      box.querySelectorAll(".slot-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          const slotIndex = Number(button.dataset.slotIndex);
+          addAppointmentSlotToCalendar(
+            slots[slotIndex],
+            option,
+            index,
+            button
+          );
+        });
+      });
+    }
+
+
+    /* ==========================================================
+       ADD CONFIRMED APPOINTMENT TO Kindly CALENDAR
+    ========================================================== */
+
+    function addAppointmentSlotToCalendar(slot, option, index, button) {
+      if (!slot || !slot.date) {
+        alert(
+          "Kindly found a time, but the booking website did not provide a usable date."
+        );
+        return;
+      }
+
+      const events = getCalendar();
+
+      const appointmentTask =
+        currentAppointmentContext?.what ||
+        slot.service ||
+        "Appointment";
+
+      const location = option.address
+        ? `${option.name} — ${option.address}`
+        : option.name;
+
+      const existingAppointment = events.find(event =>
+        event.appointment === true &&
+        event.date === slot.date &&
+        event.time === slot.time &&
+        event.location === location
+      );
+
+      if (existingAppointment) {
+        button.classList.add("added");
+        button.textContent = "✓ Added to calendar";
+        return;
+      }
+
+      const event = {
+        id:
+          Date.now().toString() +
+          "-" +
+          Math.random().toString(36).slice(2, 9),
+        date: slot.date,
+        time: slot.time || "Appointment",
+        task: appointmentTask,
+        location: location,
+        reason: `Appointment at ${option.name}`,
+        source: "appointment",
+        appointment: true,
+        service:
+          slot.service ||
+          currentAppointmentContext?.what ||
+          ""
+      };
+
+      events.push(event);
+      saveCalendar(events);
+
+      button.classList.add("added");
+      button.textContent = "✓ Added to calendar";
+
+      const note = document.getElementById(
+        `appointment-calendar-note-${index}`
+      );
+
+      if (note) {
+        note.textContent =
+          `✓ ${appointmentTask} at ${option.name} was added to your Kindly calendar.`;
+      }
+
+      renderCalendar();
+    }
+
+
+
+    /* ==========================================================
+       INITIALIZE
+    ========================================================== */
+
+    renderCalendar();
+
+  </script>
+</body>
+</html>
